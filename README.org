@@ -3,13 +3,13 @@
 
 ** Parâmetros
 Em board.h, o primeiro termo de BOARD SIZE determina o número de espaços no jogo. Ainda não há obstáculos além da própria cobra.
-``` C
+```C
 #define BOARD_SIZE (30 + 2) // + 30, nesse caso
 ```
 
 ** Build
 O gcc foi utilizado para compilar de maneira simples, utilizando o seguinte comando:
 
-``` sh
+```sh
 > gcc main.c board.c bfs.c -o program; ./program
 ```
