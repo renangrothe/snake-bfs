@@ -1,0 +1,12 @@
+* Protótipo de Snake Game cli
+- A cobra sempre determina a rota com BFS, através deste projeto você pode visualizar a busca em largura acontecendo dinamicamente.
+
+** Parâmetros
+Em board.h, o primeiro termo de BOARD SIZE determina o número de espaços no jogo. Ainda não há obstáculos além da própria cobra.
+
+src_<C>{#define BOARD_SIZE (30 + 2) // + 2 is NOT playable area}
+
+** Build
+O gcc foi utilizado para compilar de maneira simples, utilizando o seguinte comando:
+
+src_<sh>{gcc main.c board.c bfs.c -o program; ./program}
