@@ -10,8 +10,8 @@
 
 typedef struct snake {
   size_t size;
-  char x_position;
-  char y_position;
+  size_t x_position;
+  size_t y_position;
 } Snake;
 
 typedef struct Board {

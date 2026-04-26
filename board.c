@@ -13,6 +13,11 @@ void play_game(Board *b, Snake *s) {
       origin[i][j].next = NULL;
     }
 
+  size_t points = 0;
+  Queue snake_body;
+  init_queue(&snake_body);
+  insert_queue(&snake_body, s->x_position, s->y_position);
+
   while (running) {
 
     print_board(*b);
@@ -20,40 +25,62 @@ void play_game(Board *b, Snake *s) {
     // find route to objective
     bool found = run_bfs(b, s->x_position, s->y_position, origin);
 
+    Node tail_position = {s->x_position, s->y_position, NULL};
+
     if (found) {
       //  translate coordinates to smaller matrix
       Node *passo_atual = origin[s->x_position - 1][s->y_position - 1].next;
 
       while (passo_atual != NULL) {
-        /* if (b->board[passo_atual->x][passo_atual->y] == 'x') */
-        b->board[s->x_position][s->y_position] = ' ';
 
+        bool scored = b->board[passo_atual->x][passo_atual->y] == 'x';
+
+        insert_queue(&snake_body, (size_t)passo_atual->x,
+                     (size_t)passo_atual->y);
+
+        if (scored) {
+          s->size++;
+          /* b->board[s->x_position][s->y_position] = ' '; */
+        } else {
+          /* if (s->x_position != tail_position.x && */
+          /* s->y_position != tail_position.y) { */
+
+          tail_position = pop_queue(&snake_body);
+          b->board[tail_position.x][tail_position.y] = 0;
+          /* } */
+        }
         snake_last_position.x = s->x_position;
         snake_last_position.y = s->y_position;
 
         s->x_position = passo_atual->x; // current_step ->x
         s->y_position = passo_atual->y;
 
-        b->board[s->x_position][s->y_position] = '@';
+        b->board[s->x_position][s->y_position] =
+            '@'; // draw snake's head current position
 
         print_board(*b);
+
         printf("\n");
+
         usleep(50000);
 
         passo_atual = passo_atual->next;
+        scored = false;
       }
+
+      points++;
+      printf("Points = %lu\n", points);
 
       add_objective(b); // new objective generated
     } else {
-      printf("Game Over.");
+      printf("\nGame Over.\n");
       break;
     }
 
-    printf("inloop\n");
     /* running = false; */
   }
 
-  printf("outloop\n");
+  printf("Final points = %lu\n", points);
   return;
 }
 
